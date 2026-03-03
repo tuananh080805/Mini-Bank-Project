@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model bank_accounts {
+  id                                                       String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                                                  String         @unique @db.Uuid
+  account_number                                           BigInt         @unique @default(autoincrement())
+  balance                                                  Decimal?       @default(0.0) @db.Decimal(15, 2)
+  users                                                    users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions_transactions_from_account_idTobank_accounts transactions[] @relation("transactions_from_account_idTobank_accounts")
+  transactions_transactions_to_account_idTobank_accounts   transactions[] @relation("transactions_to_account_idTobank_accounts")
+
+  @@index([account_number], map: "idx_bank_accounts")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model transactions {
+  id                                                        String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reference_number                                          BigInt              @unique @default(autoincrement())
+  from_account_id                                           String?             @db.Uuid
+  to_account_id                                             String?             @db.Uuid
+  amount                                                    Decimal             @db.Decimal(15, 2)
+  type                                                      transactions_type
+  status                                                    transactions_status
+  description                                               String?             @db.VarChar(255)
+  created_at                                                DateTime?           @default(now()) @db.Timestamp(6)
+  updated_at                                                DateTime?           @default(now()) @db.Timestamp(6)
+  bank_accounts_transactions_from_account_idTobank_accounts bank_accounts?      @relation("transactions_from_account_idTobank_accounts", fields: [from_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bank_accounts_transactions_to_account_idTobank_accounts   bank_accounts?      @relation("transactions_to_account_idTobank_accounts", fields: [to_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([from_account_id], map: "idx_transactions_from_account")
+  @@index([status], map: "idx_transactions_status")
+  @@index([to_account_id], map: "idx_transactions_to_account")
+}
+
+model users {
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email               String                @unique @db.VarChar(255)
+  password_hash       String                @db.VarChar(255)
+  pin_hash            String?               @db.VarChar(255)
+  is_verified         Boolean?              @default(false)
+  failed_pin_attempts Int?                  @default(0)
+  is_pin_locked       Boolean?              @default(false)
+  created_at          DateTime?             @default(now()) @db.Timestamp(6)
+  updated_at          DateTime?             @default(now()) @db.Timestamp(6)
+  bank_accounts       bank_accounts?
+  email_verifications email_verifications[]
+}
+
+model email_verifications {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String    @db.Uuid
+  token      String    @unique @db.VarChar(64)
+  expires_at DateTime  @db.Timestamp(6)
+  used       Boolean?  @default(false)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([token], map: "idx_email_verifications_token")
+}
+
+enum transactions_status {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum transactions_type {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+}
