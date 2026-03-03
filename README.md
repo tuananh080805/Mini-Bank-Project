@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🏦 Mini Bank Project
 
 Một ứng dụng ngân hàng mini được xây dựng bằng **Node.js + Express + PostgreSQL + Prisma**, hỗ trợ các chức năng cơ bản như đăng ký, đăng nhập, xem số dư và thực hiện giao dịch.
@@ -136,5 +135,3 @@ transactions
 
 > Built with ❤️ — Mini Bank Project 
 =======
-# mini-bank-project
->>>>>>> a55a419645ac55b3b5a60299425bc2bb65d4645a
