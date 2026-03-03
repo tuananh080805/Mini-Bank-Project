@@ -199,4 +199,4 @@ transactions
 
 ## 👨‍💻 Tác giả
 
-> Built with ❤️ — Mini Bank Project
+> Bùi Tuấn Anh - ❤️
