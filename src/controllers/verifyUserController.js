@@ -4,9 +4,7 @@ const verifyUserController = async (req, res, next) => {
     try {
         const { token } = req.query
         await verifyUser(token)
-        return res.status(200).json({
-            message: 'Account Active'
-        })
+        return res.redirect("https://mini-bank-project-fe.vercel.app/login")
     }
     catch (err) {
         next(err)
