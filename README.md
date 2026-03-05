@@ -3,7 +3,7 @@
 Một ứng dụng ngân hàng mini được xây dựng bằng **Node.js + Express + PostgreSQL + Prisma**, hỗ trợ các chức năng cơ bản như đăng ký, đăng nhập, xem số dư và thực hiện giao dịch.
 
 ### 🌐 Live Demo & Deployment
-**👉 Trải nghiệm trực tiếp ứng dụng tại đây: [Mini Bank Live Demo]([https://mini-bank-project-fe.vercel.app/])**
+**👉 Trải nghiệm trực tiếp ứng dụng tại đây: [Mini Bank Live Demo](https://mini-bank-project-fe.vercel.app/)**
 
 **📝 Hướng dẫn trải nghiệm:**
 - Bạn có thể sử dụng **Tài khoản Demo** có sẵn:
